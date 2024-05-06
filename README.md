@@ -1,5 +1,5 @@
 # USB-Password-Manager
-This is a password manager that is meant to run on an esp32 board, utilizing a tft display and a rotary dial for interface. Rotate through your saved passwords and then click to have them typed out on the computer it's plugged into. **NOTE: I WOULD NOT TRUST THIS WITH ANY SENSITIVE PASSWORDS, THIS IS MEARLY A FUN PROJECT AND LACKS SERIOUS ENCRYPTION. PLEASE USE AT YOUR OWN RISK WITH COMPUTERS YOU TRUST**
+This is a password manager that is meant to run on a micro controller (See [how to make yourself](#How-to-make-yourself) for exactly which products I used). Rotate through your saved passwords and then click to have them typed out on the computer it's plugged into. **NOTE: I WOULD NOT TRUST THIS WITH ANY SENSITIVE PASSWORDS, THIS IS MEARLY A FUN PROJECT AND LACKS SERIOUS ENCRYPTION. PLEASE USE AT YOUR OWN RISK WITH COMPUTERS YOU TRUST**
 
 ## How to make yourself
 This is the hardware I'm using, however there shouldn't be anything special about my equipment and you should be able to use many different options. However if you still wish to use the exact same specs, here is what I have along with links:
