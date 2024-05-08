@@ -1,5 +1,5 @@
 import board
-import terminalio
+import displayio
 
 from adafruit_display_text import label
 from adafruit_bitmap_font import bitmap_font
@@ -29,10 +29,25 @@ encoder_button_held = False
 
 encoder = rotaryio.IncrementalEncoder(seesaw)
 last_position = None
+position = 0
 
 ENCODER_UPPER_BOUND = 0xFFFFFF
 ENCODER_LOWER_BOUND = 0x000000
 ENCODER_RESET = 0
+
+# Text Labels
+view_entries = label.Label(font, text="View Entries", color=color)
+view_entries.x = 10
+view_entries.y = 22
+
+new_entry = label.Label(font, text="New Entry", color=color)
+new_entry.x = 10
+new_entry.y = 57
+
+text_group = displayio.Group()
+text_group.append(view_entries)
+text_group.append(new_entry)
+display.root_group = text_group
 
 def encoder_changed():
     if (position > ENCODER_UPPER_BOUND) or (position < ENCODER_LOWER_BOUND):
@@ -43,11 +58,6 @@ def encoder_changed():
 while True:
     position = encoder.position
 
-    text_area = label.Label(font, text=text, color=color)
-    text_area.x = 10
-    text_area.y = 22
-    display.root_group = text_area
-
     if position != last_position:
         last_position = position
         color = position
@@ -55,7 +65,6 @@ while True:
 
     if not button.value and not encoder_button_held:
         encoder_button_held = True
-        position *= 10
         print("Button pressed")
 
     if button.value and encoder_button_held:
