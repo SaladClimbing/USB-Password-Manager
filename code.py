@@ -21,9 +21,11 @@ while True:
         rotary_encoder.encoder_changed(position)
 
     if not rotary_encoder.button.value and not rotary_encoder.encoder_button_held:
-        encoder_button_held = True
+        rotary_encoder.encoder_button_held = True
+        main_menu.selected_color = 0x00FF00
         print("Button pressed")
 
     if rotary_encoder.button.value and rotary_encoder.encoder_button_held:
-        encoder_button_held = False
+        rotary_encoder.encoder_button_held = False
+        main_menu.selected_color = 0xFF0000
         print("Button released")
