@@ -33,20 +33,25 @@ encoder = rotaryio.IncrementalEncoder(seesaw)
 last_position = None
 position = 0
 
-ENCODER_UPPER_BOUND = 0xFFFFFF
-ENCODER_LOWER_BOUND = 0x000000
+ENCODER_UPPER_BOUND = 2
+ENCODER_LOWER_BOUND = 0
 ENCODER_RESET = 0
 
-menuobj = menu.MainMenu(display)
+main_menu = menu.MainMenu(display)
 
 def encoder_changed():
-    if (position > ENCODER_UPPER_BOUND) or (position < ENCODER_LOWER_BOUND):
-        encoder.position = ENCODER_RESET
+    if position > ENCODER_UPPER_BOUND:
+        encoder.position = ENCODER_LOWER_BOUND
+    if position < ENCODER_LOWER_BOUND:
+        encoder.position = ENCODER_UPPER_BOUND
+    
     print("Position: {}".format(position))
 
 # Main loop
 while True:
     position = encoder.position
+
+    main_menu.update_label(position)
 
     if position != last_position:
         last_position = position
