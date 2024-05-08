@@ -1,4 +1,5 @@
 import json
+from storage import getmount
 
 class PasswordDatabase:
 	def __init__(self, filename):
@@ -14,6 +15,8 @@ class PasswordDatabase:
 		return data
 
 	def save_data(self):
+		if getmount("/").readonly:
+			return
 		with open(self.filename, "w") as file:
 			json.dump(self.data, file)
 
