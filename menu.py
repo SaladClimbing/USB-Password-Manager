@@ -5,7 +5,6 @@ from adafruit_bitmap_font import bitmap_font # type: ignore
 
 class MainMenu:
 	def __init__(self, display):
-		text = "Hello, CircuitPython!"
 		self.font = bitmap_font.load_font("/fonts/35-Adobe-Helvetica-Bold.bdf")
 		self.color = 0xFFFFFF
 		self.selected_color = 0xFF0000
