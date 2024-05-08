@@ -1,3 +1,5 @@
+**This branch is a development branch for trying, so, so, desperately hard to get PlatformIO to work so I can use VSCode and not the ArduinoIDE**
+
 # USB-Password-Manager
 This is a password manager that is meant to run on a micro controller (See [how to make yourself](#How-to-make-yourself) for exactly which products I used). Rotate through your saved passwords and then click to have them typed out on the computer it's plugged into. **NOTE: I WOULD NOT TRUST THIS WITH ANY SENSITIVE PASSWORDS, THIS IS MEARLY A FUN PROJECT AND LACKS SERIOUS ENCRYPTION. PLEASE USE AT YOUR OWN RISK WITH COMPUTERS YOU TRUST**
 
