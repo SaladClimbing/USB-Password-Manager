@@ -1,0 +1,3 @@
+Adafruit CircuitPython 9.0.4 on 2024-04-16; Adafruit Feather ESP32-S3 Reverse TFT with ESP32S3
+Board ID:adafruit_feather_esp32s3_reverse_tft
+UID:CD4557FED442
