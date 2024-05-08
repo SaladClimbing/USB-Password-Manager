@@ -1,5 +1,15 @@
 import board
+import terminalio
+
+from adafruit_display_text import label
+from adafruit_bitmap_font import bitmap_font
 from adafruit_seesaw import seesaw, rotaryio, digitalio
+
+display = board.DISPLAY
+
+text = "Hello, CircuitPython!"
+font = bitmap_font.load_font("/fonts/35-Adobe-Helvetica-Bold.bdf")
+color = 0xFFFFFF
 
 # i2c = board.I2C()  # uses board.SCL and board.SDA
 i2c = board.STEMMA_I2C()  # For using the built-in STEMMA QT connector on a microcontroller
@@ -20,8 +30,8 @@ encoder_button_held = False
 encoder = rotaryio.IncrementalEncoder(seesaw)
 last_position = None
 
-ENCODER_UPPER_BOUND = 10
-ENCODER_LOWER_BOUND = 0
+ENCODER_UPPER_BOUND = 0xFFFFFF
+ENCODER_LOWER_BOUND = 0x000000
 ENCODER_RESET = 0
 
 def encoder_changed():
@@ -33,12 +43,19 @@ def encoder_changed():
 while True:
     position = encoder.position
 
+    text_area = label.Label(font, text=text, color=color)
+    text_area.x = 10
+    text_area.y = 22
+    display.root_group = text_area
+
     if position != last_position:
         last_position = position
+        color = position
         encoder_changed()    
 
     if not button.value and not encoder_button_held:
         encoder_button_held = True
+        position *= 10
         print("Button pressed")
 
     if button.value and encoder_button_held:
