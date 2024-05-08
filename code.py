@@ -1,9 +1,11 @@
 import board
-import displayio
+import displayio # type: ignore
+import menu # type: ignore
 
-from adafruit_display_text import label
-from adafruit_bitmap_font import bitmap_font
-from adafruit_seesaw import seesaw, rotaryio, digitalio
+from adafruit_display_text import label # type: ignore
+from adafruit_bitmap_font import bitmap_font # type: ignore
+from adafruit_seesaw import seesaw, rotaryio, digitalio # type: ignore
+
 
 display = board.DISPLAY
 
@@ -35,19 +37,7 @@ ENCODER_UPPER_BOUND = 0xFFFFFF
 ENCODER_LOWER_BOUND = 0x000000
 ENCODER_RESET = 0
 
-# Text Labels
-view_entries = label.Label(font, text="View Entries", color=color)
-view_entries.x = 10
-view_entries.y = 22
-
-new_entry = label.Label(font, text="New Entry", color=color)
-new_entry.x = 10
-new_entry.y = 57
-
-text_group = displayio.Group()
-text_group.append(view_entries)
-text_group.append(new_entry)
-display.root_group = text_group
+menuobj = menu.MainMenu(display)
 
 def encoder_changed():
     if (position > ENCODER_UPPER_BOUND) or (position < ENCODER_LOWER_BOUND):
