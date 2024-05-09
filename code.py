@@ -1,7 +1,6 @@
 import board
 import usb_hid
 
-from time import sleep
 from menu import MainMenu, ViewEntries, MenuStates
 from encoder import Encoder
 from database import PasswordDatabase
