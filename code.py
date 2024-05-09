@@ -25,6 +25,12 @@ while True:
         main_menu.update_label(position_mod)
 
     if state == MenuStates.VIEW_ENTRIES:
+        if position > len(keys) - 1:
+            rotary_encoder.encoder.position = 0
+            position = rotary_encoder.get_position()
+        elif position < 0:
+            state = MenuStates.MAIN_MENU
+        
         if position == 0:
             users = list(db.data[keys[position]].keys())[0]
             view_entries.update_label(
@@ -55,12 +61,13 @@ while True:
         rotary_encoder.encoder_button_held = True
         main_menu.selected_color = 0x00FF00
         if state == MenuStates.MAIN_MENU:
-            if position == 0:
+            if position_mod == 0:
                 state = MenuStates.VIEW_ENTRIES
-            elif position == 1:
+            elif position_mod == 1:
                 state = MenuStates.NEW_ENTRY
-            elif position == 2:
+            elif position_mod == 2:
                 state = MenuStates.SETTINGS
+            rotary_encoder.encoder.position = 0
         print("Button pressed")
 
     if rotary_encoder.button.value and rotary_encoder.encoder_button_held:
