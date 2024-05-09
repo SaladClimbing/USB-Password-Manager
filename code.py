@@ -1,11 +1,19 @@
 import board
-import digitalio
+import usb_hid
+
+from time import sleep
 from menu import MainMenu, ViewEntries, MenuStates
 from encoder import Encoder
 from database import PasswordDatabase
+from adafruit_hid.keyboard import Keyboard
+from adafruit_hid.keyboard_layout_us import KeyboardLayoutUS
+from adafruit_hid.keycode import Keycode
+
 display = board.DISPLAY
 
 db = PasswordDatabase("/passwords.json")
+kbd = Keyboard(usb_hid.devices) # Initialize Keyboard
+layout = KeyboardLayoutUS(kbd) # Set Keyboard Layout
 keys = list(db.data.keys())
 
 main_menu = MainMenu(display)
@@ -68,10 +76,11 @@ while True:
             elif position_mod == 2:
                 state = MenuStates.SETTINGS
             rotary_encoder.encoder.position = 0
+        if state == MenuStates.VIEW_ENTRIES:
+            layout.write(db.get_password(keys[position], list(db.data[keys[position]].keys())[0]))
         print("Button pressed")
 
     if rotary_encoder.button.value and rotary_encoder.encoder_button_held:
         rotary_encoder.encoder_button_held = False
-        main_menu.selected_color = 0xFF0000
+        main_menu.selected_color = 0xFFFF00
         print("Button released")
-    
