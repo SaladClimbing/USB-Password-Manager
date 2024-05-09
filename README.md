@@ -7,5 +7,13 @@ The board that I am using is [the Adafruit Esp32-S3 Reverse TFT Feather](https:/
 The rotary encoder is also from Adafruit and is [this I2C board](https://www.adafruit.com/product/4991).
 I used the Stemma QT ports however there is nothing special that makes Stemma QT a requirement
 
+## Photos
+These are some pictures and videos of the device in its current state as of May 9th, 2024
+
+![working gif](photos/PXL_20240509_141157933.gif)
+
+![full](photos/PXL_20240509_141127445.jpg)
+![display](photos/PXL_20240509_141147412.jpg)
+
 ## Contributing
 If you'd like to contribute, please do, fork and submit a pull request. Please please please, label your changes well both in your pull request and do not leave your code confusing and commentless. Github is also not very intuitive to me and I'm very new to the whole process so please bear with me, and notify me if I did anything wrong.
