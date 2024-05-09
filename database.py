@@ -26,6 +26,11 @@ class PasswordDatabase:
 		self.data[website][username] = password
 		self.save_data()
 
+	def get_username(self, website, index=0):
+		if website in self.data:
+			return list(self.data[website].keys())[index]
+		return None
+ 
 	def get_password(self, website, username):
 		if website in self.data and username in self.data[website]:
 			return self.data[website][username]
