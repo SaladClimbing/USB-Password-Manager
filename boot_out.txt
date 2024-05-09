@@ -2,4 +2,4 @@ Adafruit CircuitPython 9.0.4 on 2024-04-16; Adafruit Feather ESP32-S3 Reverse TF
 Board ID:adafruit_feather_esp32s3_reverse_tft
 UID:CD4557FED442
 [2K[0Gboot.py output:
-Switch is pressed. CircuitPython write access to the drive is disabled.
+Switch is not pressed. Enabling CircuitPython write access to the drive.
