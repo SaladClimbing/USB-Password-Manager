@@ -16,10 +16,10 @@ display = board.DISPLAY
 
 NUMBER_OF_MENU_ITEMS = 3
 
-db = PasswordDatabase("/passwords.json")
+database = PasswordDatabase("/passwords.json")
 keyboard = Keyboard(usb_hid.devices) # Initialize Keyboard
 layout = KeyboardLayoutUS(keyboard) # Set Keyboard Layout
-web_keys = list(db.data.keys())
+web_keys = list(database.data.keys())
 
 main_menu = MainMenu(display)
 view_entries = ViewEntries(display)
@@ -28,9 +28,6 @@ rotary_encoder = Encoder()
 last_position = None
 position = None
 state = MenuStates.MAIN_MENU
-
-def get_username_at_position(position):
-    return db.get_username(web_keys[position])
 
 # Main loop
 while True:
@@ -46,32 +43,7 @@ while True:
             position = rotary_encoder.get_position()
         elif position < 0:
             state = MenuStates.MAIN_MENU
-        
-        username_at_position = get_username_at_position(position)
-        username_ahead_position = get_username_at_position(position + 1)
-        username_behind_position = get_username_at_position(position - 1)
-        
-        if position == 0:
-            users = list(db.data[web_keys[position]].keys())[0]
-            view_entries.update_label(
-                0,
-                web_keys[position] + " ({})".format(username_at_position),
-                web_keys[position + 1] + " ({})".format(username_ahead_position),
-                web_keys[position + 2] + " ({})".format(db.get_username(web_keys[position + 2])))
-            
-        elif position == len(web_keys) - 1:
-            view_entries.update_label(
-                2,
-                web_keys[position - 2] + " ({})".format(db.get_username(web_keys[position - 2])),
-                web_keys[position - 1] + " ({})".format(username_behind_position),
-                web_keys[position] + " ({})".format(username_at_position))
-            
-        else:
-            view_entries.update_label(
-                1,
-                web_keys[position - 1] + " ({})".format(username_behind_position),
-                web_keys[position] + " ({})".format(username_at_position),
-                web_keys[position + 1] + " ({})".format(username_ahead_position)
+        view_entries.render(position, database, web_keys)
     
     if position != last_position:
         last_position = position
@@ -81,7 +53,7 @@ while True:
         rotary_encoder.encoder_button_held = True
         main_menu.selected_color = 0x00FF00
         if state == MenuStates.VIEW_ENTRIES:
-            view_entries.clicked(keyboard, layout, web_keys, db, position)
+            view_entries.clicked(keyboard, layout, web_keys, database, position)
         if state == MenuStates.MAIN_MENU:
             if position_mod == 0:
                 state = MenuStates.VIEW_ENTRIES

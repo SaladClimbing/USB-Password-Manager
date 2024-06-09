@@ -15,6 +15,10 @@ class ViewEntries:
 
 		self.update_all()
 	
+    
+    def get_username_at_position(position):
+        return database.get_username(position)
+
 	def update_top_label(self, top, color):
 		self.top_label = label.Label(self.font, text=top, color=color)
 		self.top_label.x = self.text_position_X
@@ -68,3 +72,30 @@ class ViewEntries:
         keyboard.send(Keycode.TAB)
         layout.write(password)
         keyboard.send(Keycode.ENTER)
+    
+    def render(self, position, database, web_keys):
+        username_at_position = get_username_at_position(position)
+        username_ahead_position = get_username_at_position(position + 1)
+        username_behind_position = get_username_at_position(position - 1)
+        
+        if position == 0:
+            users = list(database.data[web_keys[position]].keys())[0]
+            self.update_label(
+                0,
+                web_keys[position] + " ({})".format(username_at_position),
+                web_keys[position + 1] + " ({})".format(username_ahead_position),
+                web_keys[position + 2] + " ({})".format(get_username_at_position(position + 2)))
+            
+        elif position == len(web_keys) - 1:
+            self.update_label(
+                2,
+                web_keys[position - 2] + " ({})".format(get_username_at_position(position - 2)),
+                web_keys[position - 1] + " ({})".format(username_behind_position),
+                web_keys[position] + " ({})".format(username_at_position))
+            
+        else:
+            self.update_label(
+                1,
+                web_keys[position - 1] + " ({})".format(username_behind_position),
+                web_keys[position] + " ({})".format(username_at_position),
+                web_keys[position + 1] + " ({})".format(username_ahead_position)
