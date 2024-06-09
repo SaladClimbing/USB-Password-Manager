@@ -1,3 +1,4 @@
+# Test
 import board
 import usb_hid
 
