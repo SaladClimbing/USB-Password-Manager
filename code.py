@@ -1,17 +1,23 @@
 import board
 import usb_hid
 
-from menu import MainMenu, ViewEntries, MenuStates
+from menu import MainMenu, MenuStates
+from view_entries import ViewEntries
+
 from encoder import Encoder
+
 from database import PasswordDatabase
+
 from adafruit_hid.keyboard import Keyboard
 from adafruit_hid.keyboard_layout_us import KeyboardLayoutUS
 from adafruit_hid.keycode import Keycode
 
 display = board.DISPLAY
 
+NUMBER_OF_MENU_ITEMS = 3
+
 db = PasswordDatabase("/passwords.json")
-kbd = Keyboard(usb_hid.devices) # Initialize Keyboard
+keyboard = Keyboard(usb_hid.devices) # Initialize Keyboard
 layout = KeyboardLayoutUS(kbd) # Set Keyboard Layout
 web_keys = list(db.data.keys())
 
@@ -23,10 +29,13 @@ last_position = None
 position = None
 state = MenuStates.MAIN_MENU
 
+def get_username_at_position(position):
+    return db.get_username(web_keys[position])
+
 # Main loop
 while True:
     position = rotary_encoder.get_position()
-    position_mod = position % 3
+    position_mod = position % NUMBER_OF_MENU_ITEMS
     
     if state == MenuStates.MAIN_MENU:
         main_menu.update_label(position_mod)
@@ -38,28 +47,32 @@ while True:
         elif position < 0:
             state = MenuStates.MAIN_MENU
         
+        username_at_position = get_username_at_position(position)
+        username_ahead_position = get_username_at_position(position + 1)
+        username_behind_position = get_username_at_position(position - 1)
+        
         if position == 0:
             users = list(db.data[web_keys[position]].keys())[0]
             view_entries.update_label(
                 0,
-                web_keys[position] + " ({})".format(db.get_username(web_keys[position])),
-                web_keys[position + 1] + " ({})".format(db.get_username(web_keys[position + 1])),
+                web_keys[position] + " ({})".format(username_at_position),
+                web_keys[position + 1] + " ({})".format(username_ahead_position),
                 web_keys[position + 2] + " ({})".format(db.get_username(web_keys[position + 2])))
             
         elif position == len(web_keys) - 1:
             view_entries.update_label(
                 2,
                 web_keys[position - 2] + " ({})".format(db.get_username(web_keys[position - 2])),
-                web_keys[position - 1] + " ({})".format(db.get_username(web_keys[position - 1])),
-                web_keys[position] + " ({})".format(db.get_username(web_keys[position])))
+                web_keys[position - 1] + " ({})".format(username_behind_position),
+                web_keys[position] + " ({})".format(username_at_position))
             
         else:
             view_entries.update_label(
                 1,
-                web_keys[position - 1] + " ({})".format(db.get_username(web_keys[position - 1])),
-                web_keys[position] + " ({})".format(db.get_username(web_keys[position])),
-                web_keys[position + 1] + " ({})".format(db.get_username(web_keys[position + 1])))
-
+                web_keys[position - 1] + " ({})".format(username_behind_position),
+                web_keys[position] + " ({})".format(username_at_position),
+                web_keys[position + 1] + " ({})".format(username_ahead_position)
+    
     if position != last_position:
         last_position = position
         # rotary_encoder.encoder_changed(position)
@@ -68,10 +81,7 @@ while True:
         rotary_encoder.encoder_button_held = True
         main_menu.selected_color = 0x00FF00
         if state == MenuStates.VIEW_ENTRIES:
-            layout.write(db.get_username(web_keys[position]))
-            kbd.send(Keycode.TAB)
-            layout.write(db.get_password(web_keys[position], db.get_username(web_keys[position])))
-            kbd.send(Keycode.ENTER)
+            view_entries.clicked(keyboard, layout, web_keys, db, position)
         if state == MenuStates.MAIN_MENU:
             if position_mod == 0:
                 state = MenuStates.VIEW_ENTRIES
