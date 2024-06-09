@@ -18,7 +18,7 @@ NUMBER_OF_MENU_ITEMS = 3
 
 db = PasswordDatabase("/passwords.json")
 keyboard = Keyboard(usb_hid.devices) # Initialize Keyboard
-layout = KeyboardLayoutUS(kbd) # Set Keyboard Layout
+layout = KeyboardLayoutUS(keyboard) # Set Keyboard Layout
 web_keys = list(db.data.keys())
 
 main_menu = MainMenu(display)
