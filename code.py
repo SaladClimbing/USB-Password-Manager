@@ -29,19 +29,34 @@ last_position = None
 position = None
 state = MenuStates.MAIN_MENU
 
+def rotary_clicked():
+    rotary_encoder.encoder_button_held = True
+    main_menu.selected_color = 0x00FF00
+    if state == MenuStates.VIEW_ENTRIES:
+        view_entries.clicked(keybaord, layout, web_keys, database, position)
+    if state == MenuStates.MAIN_MENU:
+        if relative_position == 0:
+            state = MenuStates.ViewEntries
+        elif relative_position == 1:
+            state = MenuStates.NEW_ENTRY
+        elif state == 2:
+            state = MenuStates.SETTINGS
+        rotary_encoder.encoder.position = 0
+
 # Main loop
 while True:
     position = rotary_encoder.get_position()
-    position_mod = position % NUMBER_OF_MENU_ITEMS
+    relative_position = position % NUMBER_OF_MENU_ITEMS
     
     if state == MenuStates.MAIN_MENU:
-        main_menu.update_label(position_mod)
+        main_menu.update_label(relative_position)
 
     if state == MenuStates.VIEW_ENTRIES:
+        # Loops back around
         if position > len(web_keys) - 1:
             rotary_encoder.encoder.position = 0
             position = rotary_encoder.get_position()
-        elif position < 0:
+        elif position < 0: # Returns to the main menu when you go up at the top
             state = MenuStates.MAIN_MENU
         view_entries.render(position, database, web_keys)
     
@@ -50,19 +65,7 @@ while True:
         # rotary_encoder.encoder_changed(position)
 
     if not rotary_encoder.button.value and not rotary_encoder.encoder_button_held:
-        rotary_encoder.encoder_button_held = True
-        main_menu.selected_color = 0x00FF00
-        if state == MenuStates.VIEW_ENTRIES:
-            view_entries.clicked(keyboard, layout, web_keys, database, position)
-        if state == MenuStates.MAIN_MENU:
-            if position_mod == 0:
-                state = MenuStates.VIEW_ENTRIES
-            elif position_mod == 1:
-                state = MenuStates.NEW_ENTRY
-            elif position_mod == 2:
-                state = MenuStates.SETTINGS
-            rotary_encoder.encoder.position = 0
-        print("Button pressed")
+        rotary_clicked()
 
     if rotary_encoder.button.value and rotary_encoder.encoder_button_held:
         rotary_encoder.encoder_button_held = False
