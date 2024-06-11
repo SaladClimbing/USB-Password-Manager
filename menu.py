@@ -61,8 +61,3 @@ class MainMenu:
 		self.update_group()
 
 
-class MenuStates():
-	MAIN_MENU    = 0,
-	VIEW_ENTRIES = 1,
-	NEW_ENTRY    = 2,
-	SETTINGS     = 3

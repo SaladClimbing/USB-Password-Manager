@@ -1,8 +1,9 @@
 import board
 import usb_hid
 
-from menu import MainMenu, MenuStates
+from menu import MainMenu
 from view_entries import ViewEntries
+from state_manager import State_Manager, MENU_STATES
 
 from encoder import Encoder
 
@@ -27,19 +28,22 @@ rotary_encoder = Encoder()
 
 position = None
 last_position = None
-state = MenuStates.MAIN_MENU
+
+state_manager = State_Manager(main_menu, view_entries)
+
+state = MENU_STATES.MAIN_MENU
 
 def rotary_clicked():
     main_menu.selected_color = 0x00FF00
-    if state == MenuStates.VIEW_ENTRIES:
+    if state == MENU_STATES.VIEW_ENTRIES:
         view_entries.clicked(keybaord, layout, website_names, database, position)
-    if state == MenuStates.MAIN_MENU:
+    if state == MENU_STATES.MAIN_MENU:
         if relative_position == 0:
-            state = MenuStates.ViewEntries
+            state_manager.state = MENU_STATES.VIEW_ENTRIES
         elif relative_position == 1:
-            state = MenuStates.NEW_ENTRY
+            state_manager.state = MENU_STATES.NEW_ENTRY
         elif relative_position == 2:
-            state = MenuStates.SETTINGS
+            state_manager.state = MENU_STATES.SETTINGS
         rotary_encoder.encoder.position = 0
 
 # Main loop
@@ -47,18 +51,7 @@ while True:
     position = rotary_encoder.get_position()
     relative_position = position % NUMBER_OF_MENU_ITEMS
     
-    if state == MenuStates.MAIN_MENU:
-        main_menu.update_label(relative_position)
-
-    if state == MenuStates.VIEW_ENTRIES:
-        # Loops back around
-        if position > len(website_names) - 1:
-            rotary_encoder.encoder.position = 0
-            position = rotary_encoder.get_position()
-        elif position < 0: # Returns to the main menu when you go up at the top
-            state = MenuStates.MAIN_MENU
-
-        view_entries.render(position, database, website_names)
+    state_manager.render()
     
     if position != last_position:
         last_position = position
