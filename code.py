@@ -38,7 +38,7 @@ def rotary_clicked():
             state = MenuStates.ViewEntries
         elif relative_position == 1:
             state = MenuStates.NEW_ENTRY
-        elif state == 2:
+        elif relative_position == 2:
             state = MenuStates.SETTINGS
         rotary_encoder.encoder.position = 0
 
