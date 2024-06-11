@@ -25,12 +25,11 @@ main_menu = MainMenu(display)
 view_entries = ViewEntries(display)
 rotary_encoder = Encoder()
 
-last_position = None
 position = None
+last_position = None
 state = MenuStates.MAIN_MENU
 
 def rotary_clicked():
-    rotary_encoder.encoder_button_held = True
     main_menu.selected_color = 0x00FF00
     if state == MenuStates.VIEW_ENTRIES:
         view_entries.clicked(keybaord, layout, web_keys, database, position)
@@ -65,6 +64,7 @@ while True:
         # rotary_encoder.encoder_changed(position)
 
     if not rotary_encoder.button.value and not rotary_encoder.encoder_button_held:
+        rotary_encoder.encoder_button_held = True
         rotary_clicked()
 
     if rotary_encoder.button.value and rotary_encoder.encoder_button_held:
