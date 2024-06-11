@@ -64,38 +64,38 @@ class ViewEntries:
 		self.text_group.insert(2, self.bottom_label)
 		self.display.root_group = self.text_group
     
-    def clicked(self, keyboard, layout: KeyboardLayoutUS, web_keys, database, position):
-        username = database.get_username(web_keys[position])
-        password = database.get_password(web_keys[position], username)
+    def clicked(self, keyboard, layout: KeyboardLayoutUS, website_names, database, position):
+        username = database.get_username(website_names[position])
+        password = database.get_password(website_names[position], username)
     
         layout.write(username)
         keyboard.send(Keycode.TAB)
         layout.write(password)
         keyboard.send(Keycode.ENTER)
     
-    def render(self, position, database, web_keys):
+    def render(self, position, database, website_names):
         username_at_position = get_username_at_position(position)
         username_ahead_position = get_username_at_position(position + 1)
         username_behind_position = get_username_at_position(position - 1)
         
         if position == 0:
-            users = list(database.data[web_keys[position]].keys())[0]
+            users = list(database.data[website_names[position]].keys())[0]
             self.update_label(
                 0,
-                web_keys[position] + " ({})".format(username_at_position),
-                web_keys[position + 1] + " ({})".format(username_ahead_position),
-                web_keys[position + 2] + " ({})".format(get_username_at_position(position + 2)))
+                website_names[position] + " ({})".format(username_at_position),
+                website_names[position + 1] + " ({})".format(username_ahead_position),
+                website_names[position + 2] + " ({})".format(get_username_at_position(position + 2)))
             
-        elif position == len(web_keys) - 1:
+        elif position == len(website_names) - 1:
             self.update_label(
                 2,
-                web_keys[position - 2] + " ({})".format(get_username_at_position(position - 2)),
-                web_keys[position - 1] + " ({})".format(username_behind_position),
-                web_keys[position] + " ({})".format(username_at_position))
+                website_names[position - 2] + " ({})".format(get_username_at_position(position - 2)),
+                website_names[position - 1] + " ({})".format(username_behind_position),
+                website_names[position] + " ({})".format(username_at_position))
             
         else:
             self.update_label(
                 1,
-                web_keys[position - 1] + " ({})".format(username_behind_position),
-                web_keys[position] + " ({})".format(username_at_position),
-                web_keys[position + 1] + " ({})".format(username_ahead_position)
+                website_names[position - 1] + " ({})".format(username_behind_position),
+                website_names[position] + " ({})".format(username_at_position),
+                website_names[position + 1] + " ({})".format(username_ahead_position)

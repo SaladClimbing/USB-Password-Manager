@@ -19,7 +19,7 @@ NUMBER_OF_MENU_ITEMS = 3
 database = PasswordDatabase("/passwords.json")
 keyboard = Keyboard(usb_hid.devices) # Initialize Keyboard
 layout = KeyboardLayoutUS(keyboard) # Set Keyboard Layout
-web_keys = list(database.data.keys())
+website_names = list(database.data.keys())
 
 main_menu = MainMenu(display)
 view_entries = ViewEntries(display)
@@ -32,7 +32,7 @@ state = MenuStates.MAIN_MENU
 def rotary_clicked():
     main_menu.selected_color = 0x00FF00
     if state == MenuStates.VIEW_ENTRIES:
-        view_entries.clicked(keybaord, layout, web_keys, database, position)
+        view_entries.clicked(keybaord, layout, website_names, database, position)
     if state == MenuStates.MAIN_MENU:
         if relative_position == 0:
             state = MenuStates.ViewEntries
@@ -52,12 +52,13 @@ while True:
 
     if state == MenuStates.VIEW_ENTRIES:
         # Loops back around
-        if position > len(web_keys) - 1:
+        if position > len(website_names) - 1:
             rotary_encoder.encoder.position = 0
             position = rotary_encoder.get_position()
         elif position < 0: # Returns to the main menu when you go up at the top
             state = MenuStates.MAIN_MENU
-        view_entries.render(position, database, web_keys)
+
+        view_entries.render(position, database, website_names)
     
     if position != last_position:
         last_position = position
