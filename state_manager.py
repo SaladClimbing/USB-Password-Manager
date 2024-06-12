@@ -25,6 +25,9 @@ class State_Manager():
             
             view_entries.render(position, database, website_names)
     
+    def is_state(self, comparison_state):
+        return comparison_state == self.state
+
     @property
     def state(self):
         return self.state
@@ -32,3 +35,6 @@ class State_Manager():
     @state.setter
     def state(self, new_state):
         self.state = new_state
+
+    def __int__(self):
+        return self.state

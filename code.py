@@ -35,9 +35,9 @@ state = MENU_STATES.MAIN_MENU
 
 def rotary_clicked():
     main_menu.selected_color = 0x00FF00
-    if state == MENU_STATES.VIEW_ENTRIES:
+    if state_manager.is_state(MENU_STATES.VIEW_ENTRIES):
         view_entries.clicked(keybaord, layout, website_names, database, position)
-    if state == MENU_STATES.MAIN_MENU:
+    if state_manager.is_state(MENU_STATES.MAIN_MENU):
         if relative_position == 0:
             state_manager.state = MENU_STATES.VIEW_ENTRIES
         elif relative_position == 1:
